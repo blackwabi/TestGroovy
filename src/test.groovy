@@ -27,6 +27,26 @@ def scopeClosureResult = voltageUsingScope()
 println "The voltage using scope is $scopeClosureResult}"
 
 
+// Shows how currying (partial application) works, that is using a closure to create a closure with fewer parameters
+// In this case we are currying in the first parameter which is resistance and creating a closure
+// that takes only current as a parameter
+def voltage20Ohms = voltage.curry(20)
+
+println "The voltage with 20 Ohms is ${voltage20Ohms(current)}"
+
+
+// Example of a closure returning another closure as a result
+// Note that the return closure will bind the name parameter which is part of the scope it is defined in. And
+// so when it is called, even if name at that point is out of scope, it still "remembers" it.
+def greetingCreator = {name ->
+    return {
+        println "Hi, how are you doing $name"
+    }
+}
+
+def greeting = greetingCreator("Martin")
+greeting()
+
 // Shows that every closure has it as a default parameter if no other parameter is named
 def noParameterClosure = {
     println "I got $it"
